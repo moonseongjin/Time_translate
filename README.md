@@ -8,4 +8,5 @@
 <div>Point : 6. 데이터 프레임으로 정제 내용 + 시간 출력</div>
 <div>기존 영어로 출력할 경우 earnings on Wednesday, February 21, 2024 at approximately 4:20 PM ET. 이런식이기에 읽기 더 힘들고 원하는 대로 출력 힘듦.</div>
 
-https://github.com/moonseongjin/Time_translate/assets/124224738/540eb975-6a3c-4543-86d3-b0e93712a340
+<img src="https://github.com/moonseongjin/Time_translate/assets/124224738/540eb975-6a3c-4543-86d3-b0e93712a340">
+
