@@ -13,5 +13,6 @@
 <p>14시간을 더하는데 %A %p가 한국어 인식을 못하기에 한국어를 영어로 바꾸고, 영어를 한국어로 바꾸는 작업을 함.</p>
 <br>
 <br>
+<div>영상 첨부 : </div>
 <img src="https://github.com/moonseongjin/Time_translate/assets/124224738/540eb975-6a3c-4543-86d3-b0e93712a340">
 
