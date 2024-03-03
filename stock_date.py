@@ -5,6 +5,7 @@ import pyperclip
 import re
 from datetime import datetime, timedelta
 import pandas as pd
+import requests
 
 userid = '이메일@naver.com'  # 네이버 아이디(이메일)를 설정합니다.
 userpw = '비밀번호'  # 네이버 비밀번호를 설정합니다. 
@@ -181,3 +182,6 @@ df = df.sort_values(by='한국 시간', ascending=True)
 df.to_excel('한국 시간.xlsx', index=False)
 
 print("엑셀 파일 저장!")
+
+# WebDriver 종료
+driver.quit()
