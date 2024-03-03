@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import pyperclip
 import re
 from datetime import datetime, timedelta
+import pandas as pd
 
 userid = '이메일@naver.com'  # 네이버 아이디(이메일)를 설정합니다.
 userpw = '비밀번호'  # 네이버 비밀번호를 설정합니다. 
@@ -21,7 +22,7 @@ driver.find_element(By.NAME, 'pw').click()
 pyperclip.copy(userpw)
 driver.find_element(By.NAME, 'pw').send_keys(Keys.CONTROL, 'v')
 driver.find_element(By.CSS_SELECTOR, '#log\.login').click()
-driver.get('https://mail.naver.com/v2/folders/0?page=7')
+driver.get('https://mail.naver.com/v2/folders/0')
 
 linka = driver.find_element(By.PARTIAL_LINK_TEXT, 'Most Anticipated Releases')
 linka.click()
@@ -35,6 +36,19 @@ driver.implicitly_wait(5)
 # HTML 멘트 가져옴
 elements = driver.find_elements(By.CLASS_NAME, 'papago-parent')
 
+# 이미지 가져오기
+img_element = driver.find_element(By.CSS_SELECTOR, 'tbody > tr > td > a > img')
+
+# 이미지 결과 출력
+img_src = img_element.get_attribute('src')
+if img_src:  # 이미지 소스가 있다면
+    current_time = datetime.now().strftime('%Y-%m-%d')
+    response = requests.get(img_src)
+    with open(f'{current_time}.jpg', 'wb') as f:
+        f.write(response.content)
+        print("이미지 저장 성공!")
+    
+    
 # 한국어 -> 영어로 (이 작업을 하는 이유는 %A %p가 한국어 인식 못함)
 def translate_day(day_name):
     days = {
@@ -153,12 +167,17 @@ for est_time_str in korea_list:
 
 korean_time_list = korean_time.strip().split('\n')
 
-import pandas as pd
-
 data = { '기업명' : ticker_list,
         '한국 시간' : korean_time_list
 
 }
+# 데이터프레임 생성
 df = pd.DataFrame(data)
 
-print(df)
+# '한국 시간' 열을 기준으로 오름차순 정렬
+df = df.sort_values(by='한국 시간', ascending=True)
+
+# 엑셀 파일로 저장
+df.to_excel('한국 시간.xlsx', index=False)
+
+print("엑셀 파일 저장!")
