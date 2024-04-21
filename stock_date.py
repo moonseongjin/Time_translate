@@ -9,7 +9,6 @@ import requests
 
 userid = '이메일@naver.com'  # 네이버 아이디(이메일)를 설정합니다.
 userpw = '비밀번호'  # 네이버 비밀번호를 설정합니다. 
-
 driver = webdriver.Chrome()
 driver.implicitly_wait(3)
 
@@ -39,16 +38,6 @@ elements = driver.find_elements(By.CLASS_NAME, 'papago-parent')
 
 # 이미지 가져오기
 img_element = driver.find_element(By.CSS_SELECTOR, 'tbody > tr > td > a > img')
-
-# 이미지 결과 출력
-img_src = img_element.get_attribute('src')
-if img_src:  # 이미지 소스가 있다면
-    current_time = datetime.now().strftime('%Y-%m-%d')
-    response = requests.get(img_src)
-    with open(f'{current_time}.jpg', 'wb') as f:
-        f.write(response.content)
-        print("이미지 저장 성공!")
-    
     
 # 한국어 -> 영어로 (이 작업을 하는 이유는 %A %p가 한국어 인식 못함)
 def translate_day(day_name):
@@ -107,8 +96,10 @@ for element in elements:
     sentences = element.text.split('.')  # 문장 단위로 나누기
     for sentence in sentences:
         if "(동부 표준시)" in sentence:
+            # (월)만 제거
+            sentence_without_timezone = sentence.replace("(월)", "  월요일").split("(동부 표준시)")[0].strip()
             # "경" 단어 제거
-            sentence_without_timezone = sentence.replace("경", "").split("(동부 표준시)")[0].strip()
+            sentence_without_timezone = sentence_without_timezone.replace("경", "").strip()
             if "분" not in sentence_without_timezone:
                 sentence_without_timezone += " 00분"  # "00분" 추가
             translated_sentence = ""
@@ -119,7 +110,6 @@ for element in elements:
                     translated_sentence += translate_ampm(word) + " "
                 else:
                     translated_sentence += word + " "
-            
             output_texts += translated_sentence.strip() + '\n'
             
 # 출력 문자를 리스트 형식으로 변환
@@ -178,10 +168,24 @@ df = pd.DataFrame(data)
 # '한국 시간' 열을 기준으로 오름차순 정렬
 df = df.sort_values(by='한국 시간', ascending=True)
 
+### 저장
+
+# 저장 경로 설정
+save_path = 'C:/Users/moonw/OneDrive/바탕 화면/블로그/실적발표/'
+
+if img_src:  # 이미지 소스가 있다면
+    current_time = datetime.now().strftime('%Y-%m-%d')
+    image_filename = f'{save_path}{current_time}.jpg'  # 경로와 파일 이름 결합
+    response = requests.get(img_src)
+    with open(image_filename, 'wb') as f:
+        f.write(response.content)
+        print("이미지 저장 성공!")
+
 # 엑셀 파일로 저장
-df.to_excel('한국 시간.xlsx', index=False)
+df.to_excel(f'{save_path}한국 시간.xlsx', index=False)
 
 print("엑셀 파일 저장!")
+
 
 # WebDriver 종료
 driver.quit()
