@@ -15,5 +15,5 @@
 <br>
 <br>
 <div>영상 첨부 : </div>
-<img src="https://github.com/moonseongjin/Time_translate/assets/124224738/540eb975-6a3c-4543-86d3-b0e93712a340">
-
+<img src="https://github.com/moonseongjin/Time_translate/assets/124224738/cf9f823d-d940-4600-9947-996f5d14ea1a">
+<img src="https://github.com/moonseongjin/Time_translate/assets/124224738/ce461ec7-62dc-42d7-9c1e-8525aa3c3b85">
